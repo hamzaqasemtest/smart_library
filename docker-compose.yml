@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+  db:
+    container_name: smart_library_db_container
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: passwordr
+      MYSQL_DATABASE: smart_library
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - smart_library-db:/var/lib/mysql
+
+  phpmyadmin:
+   image: phpmyadmin/phpmyadmin
+   environment:
+     PMA_HOST: db
+     PMA_PORT: 3306
+     # PMA_ARBITRARY: 1 # Uncomment to enable arbitrary server connection
+   ports:
+     - "8080:80"
+   depends_on:
+     - db
+   restart: always
+
+volumes:
+  smart_library-db:
